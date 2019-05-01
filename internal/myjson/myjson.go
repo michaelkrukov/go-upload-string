@@ -6,18 +6,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 
 	"github.com/michaelkrukov/go-upload-string/internal/pkg/payload"
 )
 
 type createdResponse struct {
 	URI string `json:"uri"`
-}
-
-func errorAndExit(reason string, code int) {
-	fmt.Printf("Error: %s\n", reason)
-	os.Exit(code)
 }
 
 // Save uploads passed string representation of JSON object to myjson.
@@ -28,8 +22,12 @@ func Save(payload string) string {
 		bytes.NewBuffer([]byte(payload)),
 	)
 
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		err = fmt.Errorf("Status code wanted 200, but got %d", resp.StatusCode)
+	}
+
 	if err != nil {
-		errorAndExit(err.Error(), 1)
+		panic(err)
 	}
 
 	defer resp.Body.Close()
@@ -37,7 +35,7 @@ func Save(payload string) string {
 	respContent, err := ioutil.ReadAll(resp.Body)
 
 	if err != nil {
-		errorAndExit(err.Error(), 2)
+		panic(err)
 	}
 
 	jsonResponse := createdResponse{}
@@ -52,7 +50,7 @@ func Load(uri string) payload.Data {
 	resp, err := http.Get(uri)
 
 	if err != nil {
-		errorAndExit(err.Error(), 1)
+		panic(err)
 	}
 
 	defer resp.Body.Close()
@@ -60,7 +58,7 @@ func Load(uri string) payload.Data {
 	respContent, err := ioutil.ReadAll(resp.Body)
 
 	if err != nil {
-		errorAndExit(err.Error(), 2)
+		panic(err)
 	}
 
 	payloadData := payload.Data{}

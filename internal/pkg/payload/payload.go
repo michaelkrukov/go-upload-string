@@ -31,12 +31,18 @@ func CreatePayload(str string) string {
 // FromStdin returns string representation of JSON object ready for
 // uploading to myjson with content read from standart input.
 func FromStdin() string {
+	return FromReader(os.Stdin)
+}
+
+// FromReader returns string representation of JSON object ready for
+// uploading to myjson with content read from specified io.Reader.
+func FromReader(reader io.Reader) string {
 	buffer := make([]byte, 8192)
 
 	builder := strings.Builder{}
 
 	for {
-		n, err := os.Stdin.Read(buffer)
+		n, err := reader.Read(buffer)
 
 		if err != nil {
 			if err != io.EOF {

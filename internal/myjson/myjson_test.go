@@ -31,3 +31,23 @@ func Test_SaveAndLoad(t *testing.T) {
 		return
 	}
 }
+
+func Test_Load_Error(t *testing.T) {
+	defer func() {
+		if r := recover(); r == nil {
+			t.Errorf("Load didn't paniced on empty url")
+		}
+	}()
+
+	Load("")
+}
+
+func Test_Save_Error(t *testing.T) {
+	defer func() {
+		if r := recover(); r == nil {
+			t.Errorf("Save didn't paniced on incorrect payload")
+		}
+	}()
+
+	Save("a")
+}
