@@ -3,7 +3,6 @@ package payload
 import (
 	"encoding/json"
 	"io"
-	"os"
 	"strings"
 	"time"
 )
@@ -26,12 +25,6 @@ func CreatePayload(str string) string {
 	jsonString, _ := json.Marshal(jsonData)
 
 	return string(jsonString)
-}
-
-// FromStdin returns string representation of JSON object ready for
-// uploading to myjson with content read from standart input.
-func FromStdin() string {
-	return FromReader(os.Stdin)
 }
 
 // FromReader returns string representation of JSON object ready for

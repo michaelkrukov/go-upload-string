@@ -1,3 +1,5 @@
+//+build !test
+
 package main
 
 import (
@@ -18,7 +20,7 @@ func main() {
 	args := os.Args[1:]
 
 	if len(args) == 0 || args[0] == "save" {
-		payload := payload.FromStdin()
+		payload := payload.FromReader(os.Stdin)
 
 		url := myjson.Save(payload)
 
