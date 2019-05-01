@@ -20,7 +20,7 @@ func errorAndExit(reason string, code int) {
 	os.Exit(code)
 }
 
-// Save uploades passed string representation of JSON object to myjson.
+// Save uploads passed string representation of JSON object to myjson.
 func Save(payload string) string {
 	resp, err := http.Post(
 		"https://api.myjson.com/bins",
